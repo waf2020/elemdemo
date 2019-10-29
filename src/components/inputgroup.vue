@@ -8,11 +8,11 @@
              :type="type"
              :name="name"
              @input="$emit('inputvalues',$event.target.value)"/>  <!-- 获取input表单的值 -->
-             <button v-if="butTitle">{{butTitle}}</button>
-          <div v-if="error" class="error">{{error}}</div>
+             <button v-if="butTitle" @click="$emit('btnClick')">{{butTitle}}</button> <!-- 添加一个获取验证码按钮 -->
+          
        
        </div>
-       
+       <div v-if="error" class="error">{{error}}</div>
 </div>
   
     
@@ -75,10 +75,10 @@ export default {
 .input-group > button {
   border: none;
   background: #fff;
-  outline: none;
-  
-  
-   
+  outline: none; 
+}
+.error {
+  color: red;
 }
 
 

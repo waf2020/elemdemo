@@ -6,8 +6,10 @@
       
        <inputgroup 
        type="Number"
-        placeholder="请输入手机号" butTitle="获取验证码" 
+        placeholder="请输入手机号" :butTitle="butTitle" 
         v-model="phone"
+        :error="error.code"
+        @btnClick='getcode'
        />
 
        <inputgroup 
@@ -33,7 +35,9 @@ export default {
         return{
            phone:'',
            vercode:'',
-           disabled:true
+           disabled:false,
+           error:{},
+           butTitle:'获取验证码'
            
         }
     },
@@ -43,7 +47,50 @@ export default {
     methods:{
          getphone(){
              console.log("this.phone==="+this.phone)
-         }  
+         } ,
+         getTime(){
+
+            let Time=10;
+            let timer=setInterval(()=>{
+                 if(Time==0){
+                     
+                     this.disabled=false;
+                     this.butTitle="获取验证码"
+                    clearInterval(timer);
+                 }else {
+                     this.butTitle= Time-- + 's'
+                     this.disabled=true;
+                 }
+            },1000)
+         },
+         getcode(){
+             if((this.getcorrect())){
+
+                 console.log("可以发请求啦");
+                 this.getTime();
+             }
+         },
+         getcorrect(){
+             if (this.phone==''|| this.phone==null){
+                 this.error={
+                    phone:"手机号码不能为空"
+                 }
+                 return false;
+             }
+             else if(!/^1[345678]\d{9}$/.test(this.phone)){
+                 this.error={
+                    phone:"手机号码格式错误"
+                 }
+                 return false;
+             } else {
+                 console.log("手机号码格式正确");
+                 this.error={};
+                  return true;
+             }
+            
+
+            
+         }
     },
     created(){
      
